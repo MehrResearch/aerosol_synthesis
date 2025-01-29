@@ -1,0 +1,5 @@
+*.pkl.gz
+*.code-workspace
+*.zip
+out/
+data/
