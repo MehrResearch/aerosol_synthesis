@@ -1,0 +1,18 @@
+{
+  "name": "aerosol_synthesis_devcontainer",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "remoteUser": "developer",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "streetsidesoftware.code-spell-checker",
+        "esbenp.prettier-vscode"
+      ]
+    }
+  },
+  "features": {},
+  "postCreateCommand": "uv sync && [ -f data.tar.gz ] || wget -O data.tar.gz 'https://zenodo.org/records/14850513/files/data.tar.gz?download=1'; tar -xzf data.tar.gz"
+}
