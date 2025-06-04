@@ -24,8 +24,8 @@ uv sync
 
 To download the paper dataset and extract it to the default location:
 ```sh
-wget -nc -O "Microscope images.zip" "https://zenodo.org/records/13837238/files/Microscope%20images.zip?download=1"
-unzip "Microscope images.zip"
+wget -nc -O data.tar.gz "https://zenodo.org/records/14850513/files/data.tar.gz?download=1"
+tar xzvf data.tar.gz
 ```
 
 Visual Studio Code will detect the creation of a new virtual environment in `.venv` and suggest to use it.
