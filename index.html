@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aerosol Synthesis Analysis Results</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #34495e;
+            margin-top: 40px;
+            border-left: 4px solid #3498db;
+            padding-left: 15px;
+        }
+        .section {
+            margin: 30px 0;
+        }
+        .controls {
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #ecf0f1;
+            border-radius: 5px;
+        }
+        select {
+            padding: 8px 12px;
+            margin: 0 10px 10px 0;
+            border: 1px solid #bdc3c7;
+            border-radius: 4px;
+            background: white;
+            font-size: 14px;
+        }
+        label {
+            font-weight: 600;
+            margin-right: 10px;
+        }
+        .image-container {
+            text-align: center;
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            background: white;
+        }
+        .image-container svg {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .no-image {
+            color: #7f8c8d;
+            font-style: italic;
+            padding: 40px;
+            background: #f8f9fa;
+            border-radius: 4px;
+        }
+        .description {
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-left: 4px solid #3498db;
+            border-radius: 4px;
+        }
+        .experiment-info {
+            background: #e8f4fd;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+        .experiment-info strong {
+            color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Automated chemical synthesis in the aerosol phase</h1>
+        <p>This page presents the computational imaging results for analyzing aerosol reactivity outcomes from our automated synthesis experiments.</p>
+
+        <div class="section">
+            <h2>Image visualisation in different colour spaces</h2>
+            <div class="description">
+                <p>Microscope images are analyzed in RGB, HSV, and LAB color spaces to understand droplet formation and chemical reactions. Each color space provides different insights into the reaction outcomes.</p>
+            </div>
+            <div class="controls">
+                <label for="colourspace-sample">Sample:</label>
+                <select id="colourspace-sample">
+                    <option value="">Select a sample...</option>
+                </select>
+            </div>
+            <div id="colourspace-container" class="image-container">
+                <div class="no-image">Select a sample to view color space analysis</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Image segmentation masks</h2>
+            <div class="description">
+                <p>Droplet detection using Facebook's SAM (Segment Anything Model) with filtering by size (36-1500 pixels) and circularity (>0.8) to identify valid microdroplets.</p>
+            </div>
+            <div class="controls">
+                <label for="masks-sample">Sample:</label>
+                <select id="masks-sample">
+                    <option value="">Select a sample...</option>
+                </select>
+            </div>
+            <div id="masks-container" class="image-container">
+                <div class="no-image">Select a sample to view segmentation masks</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Droplet color segmentation</h2>
+            <div class="description">
+                <p>Representative colors extracted from each detected droplet using various methods including center pixel, maximum saturation, and other color space techniques.</p>
+            </div>
+            <div class="controls">
+                <label for="segment-sample">Sample:</label>
+                <select id="segment-sample">
+                    <option value="">Select a sample...</option>
+                </select>
+            </div>
+            <div id="segment-container" class="image-container">
+                <div class="no-image">Select a sample to view color segmentation</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Droplet size distribution</h2>
+            <div class="description">
+                <p>Histogram showing the diameter distribution of detected droplets, calculated from segmented areas assuming circular geometry.</p>
+            </div>
+            <div class="controls">
+                <label for="diameter-sample">Sample:</label>
+                <select id="diameter-sample">
+                    <option value="">Select a sample...</option>
+                </select>
+            </div>
+            <div id="diameter-container" class="image-container">
+                <div class="no-image">Select a sample to view size distribution</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Statistical analysis - Gaussian mixture models</h2>
+            <div class="description">
+                <p>Pairplot visualization of RGB color distributions with fitted 3-component Gaussian mixture models to classify reaction outcomes.</p>
+            </div>
+            <div class="controls">
+                <label for="pairplot-sample">Sample:</label>
+                <select id="pairplot-sample">
+                    <option value="">Select a sample...</option>
+                </select>
+            </div>
+            <div id="pairplot-container" class="image-container">
+                <div class="no-image">Select a sample to view statistical analysis</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Droplet classification on 2D simplex</h2>
+            <div class="description">
+                <p>Individual droplets plotted on a triangular simplex based on their probability of belonging to each of the three identified clusters, with separate views for each cluster.</p>
+            </div>
+            <div class="controls">
+                <label for="simplex-sample">Sample:</label>
+                <select id="simplex-sample">
+                    <option value="">Select a sample...</option>
+                </select>
+            </div>
+            <div id="simplex-container" class="image-container">
+                <div class="no-image">Select a sample to view simplex classification</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Overall droplet size and count distribution</h2>
+            <div class="description">
+                <p>Summary visualization showing droplet size distributions and counts across all experimental samples, organized by experiment type.</p>
+            </div>
+            <div id="overall-container" class="image-container">
+                <object data="droplet_size_and_count_distribution.svg" type="image/svg+xml">
+                    <div class="no-image">Overall distribution chart not available</div>
+                </object>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Assignment uncertainty analysis</h2>
+            <div class="description">
+                <p>Analysis of the uncertainty in droplet cluster assignments, showing the confidence of the statistical model in classifying each droplet into reaction outcome categories.</p>
+            </div>
+            <div id="assignment-container" class="image-container">
+                <object data="assignment_uncertainty_analysis.svg" type="image/svg+xml">
+                    <div class="no-image">Assignment uncertainty analysis not available</div>
+                </object>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample data extracted from the file listing
+        const samples = [
+            'ZCY-009-1 2023-08-21_17-23-52',
+            'ZCY-009-1 2023-08-21_17-24-13',
+            'ZCY-009-1 2023-08-21_17-24-36',
+            'ZCY-009-1 2023-08-21_17-25-54',
+            'ZCY-009-1 2023-08-21_17-26-13',
+            'ZCY-009-1 2023-08-21_17-26-36',
+            'ZCY-009-1 2023-08-21_17-27-29',
+            'ZCY-009-2 2023-08-21_17-52-13',
+            'ZCY-009-2 2023-08-21_17-53-40',
+            'ZCY-009-2 2023-08-21_17-54-42',
+            'ZCY-010 together 2023-08-22_15-50-59',
+            'ZCY-010 together 2023-08-22_15-51-28',
+            'ZCY-010 together 2023-08-22_15-51-54',
+            'ZCY-010 together 2023-08-22_15-52-26',
+            'ZCY-010 together 2023-08-22_15-53-09',
+            'ZCY-014c 2023-08-29_18-08-18',
+            'ZCY-014c 2023-08-29_18-08-39',
+            'ZCY-014c 2023-08-29_18-10-31',
+            'ZCY-014c 2023-08-29_18-21-58',
+            'ZCY-014c 2023-08-29_18-26-57',
+            'ZL-48a 2025-06-03_17-14-59',
+            'ZL-48a 2025-06-03_17-15-25',
+            'ZL-48a 2025-06-03_17-16-50',
+            'ZL-48a 2025-06-03_17-17-26',
+            'ZL-48b 2025-06-03_16-35-17',
+            'ZL-48b 2025-06-03_16-36-07',
+            'ZL-48b 2025-06-03_16-36-42',
+            'ZL-48b 2025-06-03_16-38-14',
+            'ZL-48b 2025-06-03_16-38-53'
+        ];
+
+        // Experiment type mapping
+        const experimentTypes = {
+            'ZCY-010 together': 'Acid/Base 1',
+            'ZCY-009-1': 'Acid/Base 2', 
+            'ZCY-009-2': 'Acid/Base 3',
+            'ZL-48a': 'Acid/Base 4',
+            'ZL-48b': 'Acid/Base 5',
+            'ZCY-014c': 'Redox'
+        };
+
+        function getExperimentType(sample) {
+            for (const [key, value] of Object.entries(experimentTypes)) {
+                if (sample.startsWith(key)) {
+                    return value;
+                }
+            }
+            return 'Unknown';
+        }
+
+        function populateSelect(selectId) {
+            const select = document.getElementById(selectId);
+            samples.forEach(sample => {
+                const option = document.createElement('option');
+                option.value = sample;
+                const expType = getExperimentType(sample);
+                option.textContent = `${sample} (${expType})`;
+                select.appendChild(option);
+            });
+        }
+
+        function updateImage(selectId, containerId, prefix) {
+            const select = document.getElementById(selectId);
+            const container = document.getElementById(containerId);
+            
+            select.addEventListener('change', function() {
+                const sample = this.value;
+                if (sample) {
+                    const filename = `${prefix}_${sample}.svg`;
+                    container.innerHTML = `<object data="${filename}" type="image/svg+xml">
+                        <div class="no-image">Image not available: ${filename}</div>
+                    </object>`;
+                } else {
+                    container.innerHTML = '<div class="no-image">Select a sample to view visualization</div>';
+                }
+            });
+        }
+
+        // Initialize all dropdowns and event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            populateSelect('colourspace-sample');
+            populateSelect('masks-sample');
+            populateSelect('segment-sample');
+            populateSelect('diameter-sample');
+            populateSelect('pairplot-sample');
+            populateSelect('simplex-sample');
+
+            updateImage('colourspace-sample', 'colourspace-container', 'colourspaces');
+            updateImage('masks-sample', 'masks-container', 'masks');
+            updateImage('segment-sample', 'segment-container', 'segment_colours');
+            updateImage('diameter-sample', 'diameter-container', 'diameter_distribution');
+            updateImage('pairplot-sample', 'pairplot-container', 'pairplot');
+            updateImage('simplex-sample', 'simplex-container', 'simplex');
+
+            // Special handling for pairplot and simplex which have additional suffixes
+            document.getElementById('pairplot-sample').addEventListener('change', function() {
+                const sample = this.value;
+                const container = document.getElementById('pairplot-container');
+                if (sample) {
+                    const filename = `pairplot_${sample}_centre_3clusters.svg`;
+                    container.innerHTML = `<object data="${filename}" type="image/svg+xml">
+                        <div class="no-image">Image not available: ${filename}</div>
+                    </object>`;
+                } else {
+                    container.innerHTML = '<div class="no-image">Select a sample to view statistical analysis</div>';
+                }
+            });
+
+            document.getElementById('simplex-sample').addEventListener('change', function() {
+                const sample = this.value;
+                const container = document.getElementById('simplex-container');
+                if (sample) {
+                    const filename = `simplex_${sample}_centre_3clusters.svg`;
+                    container.innerHTML = `<object data="${filename}" type="image/svg+xml">
+                        <div class="no-image">Image not available: ${filename}</div>
+                    </object>`;
+                } else {
+                    container.innerHTML = '<div class="no-image">Select a sample to view simplex classification</div>';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
