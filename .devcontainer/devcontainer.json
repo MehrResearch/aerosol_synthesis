@@ -14,5 +14,5 @@
     }
   },
   "features": {},
-  "postCreateCommand": "uv sync && [ -f data.tar.gz ] || wget -O data.tar.gz 'https://zenodo.org/records/14850513/files/data.tar.gz?download=1'; tar -xzf data.tar.gz"
+  "postCreateCommand": "uv sync && [ -f data.tar.gz ] || wget -O data.tar.gz 'https://zenodo.org/records/15632556/files/data.tar.gz?download=1'; tar -xzf data.tar.gz"
 }
