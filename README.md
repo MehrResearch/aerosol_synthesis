@@ -1,4 +1,9 @@
 # Automated chemical synthesis in the aerosol phase
+
+<a target="_blank" href="https://colab.research.google.com/github/MehrResearch/aerosol_synthesis/blob/main/Code%20notebook.ipynb">
+  <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
+</a>
+
 This repository contains both
 
 * MicroPython code for automated execution of experiments on our *Aeroboard* hardware
